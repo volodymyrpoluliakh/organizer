@@ -1,0 +1,20 @@
+//Mongod running command:
+mongod --port 27222 --dbpath D:\servers\mongodb_data_directory\events_db_sa
+
+//Mongo client running command:
+mongo --port 27222
+
+//DB creation statements
+use events_db
+db.createCollection("events");
+db.events.ensureIndex({ userId: 1, start: 1 });
+
+//Replica set deployment:
+mongod --port 27201 --dbpath D:\servers\mongodb_data_directory\events_db_rs1 --replSet rs_events_0 --smallfiles --oplogSize 128
+mongod --port 27202 --dbpath D:\servers\mongodb_data_directory\events_db_rs2 --replSet rs_events_0 --smallfiles --oplogSize 128
+mongod --port 27203 --dbpath D:\servers\mongodb_data_directory\events_db_rs3 --replSet rs_events_0 --smallfiles --oplogSize 128
+
+Connect to the 27201 and do the following in the console:
+rs.initiate();
+rs.add("oleg-pc:27202");
+rs.add("oleg-pc:27203");

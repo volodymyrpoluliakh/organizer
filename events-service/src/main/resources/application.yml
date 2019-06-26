@@ -1,0 +1,23 @@
+spring:
+  data:
+    mongodb:
+      database: events_db
+      uri: mongodb://oleg-pc:27201,oleg-pc:27202/?replicaSet=rs_events_0
+      #uri: mongodb://127.0.0.1:27222
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+  instance:
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+management:
+  health:
+    sensitive: false
+    defaults:
+      enabled: false
+  security:
+    enabled: false
+
+logging.level.org.springframework.data.mongodb.core.MongoTemplate: DEBUG
